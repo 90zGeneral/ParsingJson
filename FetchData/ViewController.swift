@@ -9,14 +9,26 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
+    @IBOutlet var message: UILabel!
+    @IBOutlet var timestamp: UILabel!
+    @IBOutlet var latitude: UILabel!
+    @IBOutlet var longitude: UILabel!
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
         fetchData() { result in
-            print(result?.timeStamp ?? "not working")
+            self.message.text = result?.message
+            self.timestamp.text = "\(result?.timeStamp)"
+            self.latitude.text = result?.coordinate.lat
+            self.longitude.text = result?.coordinate.long
         }
+        
+        
+        
     }
     
     struct Coordinate {        
@@ -25,12 +37,14 @@ class ViewController: UIViewController {
     }
     
     class Position {
+        var message: String
         var timeStamp: Int
         var coordinate: Coordinate
         
         init(jsonOject: [String: Any]) {
             
             self.timeStamp = jsonOject["timestamp"] as? Int ?? 0
+            self.message = jsonOject["message"] as? String ?? "unknown"
             let position = jsonOject["iss_position"] as? [String: Any]
             let lat = position?["latitude"] as? String ?? "unknown"
             let long = position?["longitude"] as? String ?? "unknown"
