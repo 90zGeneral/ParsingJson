@@ -14,7 +14,6 @@ class ViewController: UIViewController {
     @IBOutlet var timestamp: UILabel!
     @IBOutlet var latitude: UILabel!
     @IBOutlet var longitude: UILabel!
-    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,12 +21,10 @@ class ViewController: UIViewController {
         
         fetchData() { result in
             self.message.text = result?.message
-            self.timestamp.text = "\(result?.timeStamp)"
+            self.timestamp.text = result?.timeStamp
             self.latitude.text = result?.coordinate.lat
             self.longitude.text = result?.coordinate.long
         }
-        
-        
         
     }
     
@@ -38,12 +35,12 @@ class ViewController: UIViewController {
     
     class Position {
         var message: String
-        var timeStamp: Int
+        var timeStamp: String
         var coordinate: Coordinate
         
         init(jsonOject: [String: Any]) {
             
-            self.timeStamp = jsonOject["timestamp"] as? Int ?? 0
+            self.timeStamp = "\(jsonOject["timestamp"]!)"
             self.message = jsonOject["message"] as? String ?? "unknown"
             let position = jsonOject["iss_position"] as? [String: Any]
             let lat = position?["latitude"] as? String ?? "unknown"
